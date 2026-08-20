@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CFB 26 Recruiting Assistant — Wireframe</title>
+<style>
+  :root{
+    --line:#9a9a9a;
+    --line-soft:#c9c9c9;
+    --bg:#fafafa;
+    --panel:#ffffff;
+    --ink:#222;
+    --ink-soft:#6b6b6b;
+    --ann:#8a5a00;
+    --ready:#1f7a3f;
+    --ready-bg:#e6f4ea;
+    --warn:#b8860b;
+    --warn-bg:#fdf3d9;
+    --neutral-bg:#eeeeee;
+    --error:#b3261e;
+    --error-bg:#fbe9e7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    padding:32px 24px 80px;
+  }
+  h1.doc-title{
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--ink-soft);
+    margin:0 0 4px;
+  }
+  p.doc-sub{
+    margin:0 0 32px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .screen{
+    max-width:1080px;
+    margin:0 auto 56px;
+  }
+  .screen-label{
+    font-size:12px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ann);
+    margin:0 0 8px;
+  }
+  .frame{
+    border:1.5px dashed var(--line);
+    border-radius:6px;
+    background:var(--panel);
+    padding:0;
+    overflow:hidden;
+  }
+  .annotation{
+    font-size:11.5px;
+    font-style:italic;
+    color:var(--ann);
+    margin-top:6px;
+  }
+  /* ---- shared chrome ---- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 18px;
+    border-bottom:1.5px dashed var(--line-soft);
+  }
+  .app-name{
+    font-weight:700;
+    font-size:15px;
+    border:1px dashed var(--line-soft);
+    padding:4px 10px;
+    border-radius:4px;
+    color:var(--ink-soft);
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+  }
+  .tab{
+    font-size:12px;
+    padding:6px 12px;
+    border:1px dashed var(--line-soft);
+    border-radius:4px;
+    color:var(--ink-soft);
+  }
+  .tab.active{
+    border:1.5px solid var(--ink-soft);
+    color:var(--ink);
+    font-weight:600;
+  }
+
+  /* ---- board view ---- */
+  .board-toolbar{
+    display:flex;
+    gap:10px;
+    padding:12px 18px;
+    border-bottom:1px dashed var(--line-soft);
+  }
+  .field{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    border:1px dashed var(--line-soft);
+    border-radius:4px;
+    padding:6px 10px;
+  }
+  table.board{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+  table.board th{
+    text-align:left;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    padding:10px 16px;
+    border-bottom:1px dashed var(--line-soft);
+  }
+  table.board td{
+    padding:12px 16px;
+    border-bottom:1px dashed var(--line-soft);
+    vertical-align:middle;
+  }
+  table.board tr:last-child td{border-bottom:none;}
+  table.board tr.highlight-row{background:#fbfbfb;}
+  .name-cell{font-weight:600;}
+  .sub{color:var(--ink-soft); font-size:11.5px;}
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11.5px;
+    font-weight:600;
+    padding:5px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+  }
+  .badge.ready{background:var(--ready-bg); color:var(--ready);}
+  .badge.warn{background:var(--warn-bg); color:var(--warn);}
+  .badge.neutral{background:var(--neutral-bg); color:var(--ink-soft);}
+  .badge.error{background:var(--error-bg); color:var(--error);}
+  .dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+
+  /* ---- detail view ---- */
+  .detail-grid{
+    display:grid;
+    grid-template-columns:1.35fr 1fr;
+  }
+  .detail-main{
+    padding:18px;
+    border-right:1px dashed var(--line-soft);
+  }
+  .recruit-head{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding-bottom:14px;
+    margin-bottom:14px;
+    border-bottom:1px dashed var(--line-soft);
+  }
+  .avatar-box{
+    width:56px;height:56px;
+    border:1px dashed var(--line-soft);
+    border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;color:var(--ink-soft);
+    flex-shrink:0;
+  }
+  .recruit-name{font-size:18px;font-weight:700;margin:0 0 2px;}
+  .recruit-meta{font-size:12px;color:var(--ink-soft);}
+  .dealbreaker-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-size:11px;
+    font-weight:600;
+    padding:3px 8px;
+    border-radius:4px;
+    background:var(--neutral-bg);
+    color:var(--ink);
+    border:1px solid var(--line-soft);
+  }
+
+  .motiv-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:9px 4px;
+    border-bottom:1px dashed #e3e3e3;
+    font-size:13px;
+  }
+  .motiv-row:last-child{border-bottom:none;}
+  .motiv-name{display:flex; align-items:center; gap:8px;}
+  .pin{
+    font-size:9px;
+    padding:2px 6px;
+    border-radius:3px;
+    background:var(--neutral-bg);
+    color:var(--ink-soft);
+  }
+  .toggle-group{
+    display:flex;
+    border:1px dashed var(--line-soft);
+    border-radius:5px;
+    overflow:hidden;
+  }
+  .toggle-opt{
+    font-size:10.5px;
+    font-weight:600;
+    padding:5px 9px;
+    color:var(--ink-soft);
+    border-right:1px dashed var(--line-soft);
+  }
+  .toggle-opt:last-child{border-right:none;}
+  .toggle-opt.sel-confirmed{background:var(--ready-bg); color:var(--ready);}
+  .toggle-opt.sel-ruledout{background:var(--error-bg); color:var(--error);}
+  .toggle-opt.sel-unknown{background:var(--neutral-bg); color:var(--ink-soft);}
+
+  .detail-side{
+    padding:18px;
+    background:#fcfcfc;
+  }
+  .side-title{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .hard-sell-banner{
+    border:1.5px solid var(--ready);
+    background:var(--ready-bg);
+    color:var(--ready);
+    border-radius:6px;
+    padding:14px;
+    margin-bottom:18px;
+  }
+  .hard-sell-banner .label{
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .hard-sell-banner .pitch-name{
+    font-size:17px;
+    font-weight:700;
+    margin-top:4px;
+  }
+  .pitch-list{list-style:none; margin:0; padding:0;}
+  .pitch-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12.5px;
+    padding:8px 10px;
+    border:1px dashed var(--line-soft);
+    border-radius:5px;
+    margin-bottom:6px;
+  }
+  .pitch-item.survivor{
+    border:1.5px solid var(--ready);
+    background:var(--ready-bg);
+    color:var(--ready);
+    font-weight:700;
+  }
+  .pitch-item.eliminated{
+    color:#aaa;
+    text-decoration:line-through;
+    background:#fafafa;
+  }
+  .pitch-reason{font-size:10.5px; font-weight:400; text-decoration:none; color:#b3b3b3;}
+
+  .legend{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-top:10px;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+  .legend-item{display:flex; align-items:center; gap:5px;}
+  .legend-dot{width:8px;height:8px;border-radius:2px;}
+
+  /* ---- pipeline grade (1-5, flat state lookup, unrelated to readiness colors) ---- */
+  .pipeline-dots{display:flex; align-items:center; gap:3px;}
+  .p-dot{width:9px;height:9px;border-radius:2px;background:#fff;border:1px solid var(--line-soft);}
+  .p-dot.filled{background:#5b6b8c;border-color:#5b6b8c;}
+  .pipeline-num{font-size:11px;color:var(--ink-soft);margin-left:5px;}
+  .pipeline-unset{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    border:1px dashed var(--line-soft);
+    border-radius:4px;
+    padding:3px 8px;
+    display:inline-block;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="doc-title">Wireframe — CFB 26 Recruiting Assistant</h1>
+<p class="doc-sub">Low-fidelity layout only — no visual design system applied yet. Grey dashed boxes = structural placeholders. Colored badges are the one exception, included because the readiness signal is the core interaction.</p>
+
+<!-- SCREEN 1: BOARD VIEW -->
+<div class="screen">
+  <div class="screen-label">Screen 1 — Recruiting Board (primary / at-a-glance view)</div>
+  <div class="frame">
+    <div class="topbar">
+      <div class="app-name">[ APP NAME ]</div>
+      <div class="tabs">
+        <div class="tab active">Board</div>
+        <div class="tab">Prospects</div>
+        <div class="tab">Pitch Reference</div>
+      </div>
+    </div>
+    <div class="board-toolbar">
+      <div class="field">Position: Any ▾</div>
+      <div class="field">Class: Any ▾</div>
+      <div class="field">Pipeline: Any ▾</div>
+      <div class="field">Readiness: Any ▾</div>
+      <div class="field" style="margin-left:auto;">Search recruit…</div>
+    </div>
+    <table class="board">
+      <thead>
+        <tr>
+          <th>Recruit</th>
+          <th>Pos</th>
+          <th>Stars</th>
+          <th>Dealbreaker</th>
+          <th>Pipeline</th>
+          <th>Readiness</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td class="name-cell">D. Romo <div class="sub">South Jordan, UT</div></td>
+          <td>LG</td>
+          <td>★★★★</td>
+          <td class="sub">Proximity To Home</td>
+          <td>
+            <div class="pipeline-dots" title="Pipeline Grade 4/5">
+              <span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot"></span>
+              <span class="pipeline-num">4/5</span>
+            </div>
+          </td>
+          <td><span class="badge ready"><span class="dot"></span>READY — Hometown Hero</span></td>
+        </tr>
+        <tr>
+          <td class="name-cell">J. Nix <div class="sub">—</div></td>
+          <td>CB</td>
+          <td>★★★★</td>
+          <td class="sub">Coach Prestige</td>
+          <td>
+            <div class="pipeline-dots" title="Pipeline Grade 2/5">
+              <span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot"></span><span class="p-dot"></span><span class="p-dot"></span>
+              <span class="pipeline-num">2/5</span>
+            </div>
+          </td>
+          <td><span class="badge warn"><span class="dot"></span>3 candidates</span></td>
+        </tr>
+        <tr>
+          <td class="name-cell">D. Cooke <div class="sub">—</div></td>
+          <td>WR</td>
+          <td>★★★★</td>
+          <td class="sub">Playing Time</td>
+          <td><span class="pipeline-unset">Unset · tap to grade</span></td>
+          <td><span class="badge neutral"><span class="dot"></span>6 candidates — early</span></td>
+        </tr>
+        <tr class="highlight-row">
+          <td class="name-cell">P. Marler <div class="sub">—</div></td>
+          <td>SAM</td>
+          <td>★★★★</td>
+          <td class="sub">Academic Prestige</td>
+          <td>
+            <div class="pipeline-dots" title="Pipeline Grade 5/5">
+              <span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot filled"></span>
+              <span class="pipeline-num">5/5</span>
+            </div>
+          </td>
+          <td><span class="badge ready"><span class="dot"></span>READY — Rising Star</span></td>
+        </tr>
+        <tr>
+          <td class="name-cell">R. Granger <div class="sub">—</div></td>
+          <td>HB</td>
+          <td>★★★★</td>
+          <td class="sub">Brand Exposure</td>
+          <td>
+            <div class="pipeline-dots" title="Pipeline Grade 3/5">
+              <span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot filled"></span><span class="p-dot"></span><span class="p-dot"></span>
+              <span class="pipeline-num">3/5</span>
+            </div>
+          </td>
+          <td><span class="badge error"><span class="dot"></span>0 candidates — check data</span></td>
+        </tr>
+        <tr>
+          <td class="name-cell">M. Parker <div class="sub">—</div></td>
+          <td>CB</td>
+          <td>★★★★</td>
+          <td class="sub">Championship Contender</td>
+          <td>
+            <div class="pipeline-dots" title="Pipeline Grade 1/5">
+              <span class="p-dot filled"></span><span class="p-dot"></span><span class="p-dot"></span><span class="p-dot"></span><span class="p-dot"></span>
+              <span class="pipeline-num">1/5</span>
+            </div>
+          </td>
+          <td><span class="badge warn"><span class="dot"></span>2 candidates</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="annotation">Row click → opens Screen 2 for that recruit. Sorting/filtering by readiness lets you jump straight to anyone who's hard-sell-ready without opening each recruit individually — this is the "scan the whole board at a glance" view. Pipeline (1–5) is a flat, editable-anytime grade per state — not attached to a recruit, a season, or a program. Clicking the dots on an "Unset" state lets you grade it right there; the value then just shows up for every future recruit from that state until you change it. Because it isn't tied to the annual recruit data, wiping last year's class doesn't touch it.</div>
+</div>
+
+<!-- SCREEN 2: DETAIL VIEW -->
+<div class="screen">
+  <div class="screen-label">Screen 2 — Recruit Detail (data entry + live deduction)</div>
+  <div class="frame">
+    <div class="topbar">
+      <div class="app-name">← Back to Board</div>
+      <div class="sub">Recruit 18 of 35</div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-main">
+        <div class="recruit-head">
+          <div class="avatar-box">photo</div>
+          <div>
+            <p class="recruit-name">Delvin Romo</p>
+            <p class="recruit-meta">LG · High School · ★★★★ · South Jordan, UT</p>
+            <span class="dealbreaker-tag">Dealbreaker: Proximity To Home (locked in — confirmed by default)</span>
+          </div>
+        </div>
+
+        <p class="side-title" style="margin-bottom:12px;">Motivation Status — tap to set</p>
+
+        <div class="motiv-row"><div class="motiv-name">Academic Prestige</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Athletic Facilities</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Brand Exposure</div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt sel-ruledout">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Campus Lifestyle</div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt sel-ruledout">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Championship Contender <span class="pin">dealbreaker-adjacent</span></div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt sel-confirmed">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Coach Prestige</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Coach Stability</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Conference Prestige</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Playing Style</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Playing Time</div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt sel-ruledout">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Pro Potential</div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt sel-ruledout">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Program Tradition</div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt sel-confirmed">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Proximity To Home <span class="pin">dealbreaker</span></div>
+          <div class="toggle-group"><div class="toggle-opt">UNKNOWN</div><div class="toggle-opt sel-confirmed">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+        <div class="motiv-row"><div class="motiv-name">Stadium Atmosphere</div>
+          <div class="toggle-group"><div class="toggle-opt sel-unknown">UNKNOWN</div><div class="toggle-opt">CONFIRM</div><div class="toggle-opt">RULE OUT</div></div></div>
+      </div>
+
+      <div class="detail-side">
+        <div class="hard-sell-banner">
+          <div class="label">✓ Hard sell ready</div>
+          <div class="pitch-name">Hometown Hero</div>
+        </div>
+
+        <p class="side-title">Candidate Pitches (live, recalculated on every toggle)</p>
+        <ul class="pitch-list">
+          <li class="pitch-item survivor">Hometown Hero <span>3/3 match</span></li>
+          <li class="pitch-item eliminated">Rising Star <span class="pitch-reason">ruled out: Brand Exposure</span></li>
+          <li class="pitch-item eliminated">Big Stage <span class="pitch-reason">ruled out: Playing Time</span></li>
+          <li class="pitch-item eliminated">Legacy Builder <span class="pitch-reason">ruled out: Pro Potential</span></li>
+          <li class="pitch-item eliminated">Campus Life <span class="pitch-reason">ruled out: Campus Lifestyle</span></li>
+          <li class="pitch-item eliminated">National Spotlight <span class="pitch-reason">ruled out: Brand Exposure</span></li>
+          <li class="pitch-item eliminated" style="color:#ccc;">( … remaining pitches, all eliminated )</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="annotation">Toggling any motivation instantly re-filters the pitch list against confirmed + ruled-out categories. Banner only appears once exactly one candidate survives — that's the "earliest possible hard sell" signal from the deduction logic. Eliminated pitches show which category ruled them out, mostly for trust/debugging while you're building this.</div>
+</div>
+
+<div class="legend">
+  <span class="legend-item"><span class="legend-dot" style="background:var(--ready);"></span>Ready to hard sell (1 candidate)</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--warn);"></span>Narrowing (2+ candidates)</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--ink-soft);"></span>Early / not enough info</span>
+  <span class="legend-item"><span class="legend-dot" style="background:var(--error);"></span>Contradiction — 0 candidates, data error</span>
+</div>
+
+</body>
+</html>
