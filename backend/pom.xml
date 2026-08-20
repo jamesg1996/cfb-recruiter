@@ -12,7 +12,7 @@
 	<artifactId>cfb-recruiter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cfb-recruiter</name>
-	<description/>An application for tracking cfb26 recruits and finding their ideal pitch</description>
+	<description>An application for tracking cfb26 recruits and finding their ideal pitch</description>
 	<url/>
 	<licenses>
 		<license/>
