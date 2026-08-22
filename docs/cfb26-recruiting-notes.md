@@ -107,6 +107,19 @@ This is a derived/computed result, not stored data — a recruit's
 filtering the fixed Pitch table against that recruit's per-category
 statuses on demand.
 
+**Every motivation's status must be freely reversible** — any category
+can move in any direction (unknown ↔ confirmed ↔ ruled-out), never a
+one-way commit. This is the recovery mechanism for a mis-scout: since
+the result is a pure function of the current statuses and nothing
+derived is stored, fixing a wrong toggle is just flipping it back and
+recomputing — there is no accumulated state to unwind. It's the defense
+against both failure modes in the asymmetry note above: a wrong confirm
+(0-candidate red) or a wrong rule-out (false-confident green) is undone
+by moving the offending category and letting the whole board recompute.
+The input layer therefore stores only user *assertions*, and the engine
+recomputes from scratch on each change — it never mutates a prior result
+in place.
+
 ## Data model sketch
 
 - **MotivationCategory** — the 14 fixed categories (seed data).
