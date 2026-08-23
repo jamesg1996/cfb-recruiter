@@ -36,4 +36,11 @@ public class RecruitEntity {
     Map<MotivationCategory, MotivationStatus> motivationStatuses;
 
     protected RecruitEntity() {}
+    public RecruitEntity(String name, Map<MotivationCategory, MotivationStatus> motivationStatuses){
+        this.name = name;
+        this.motivationStatuses = motivationStatuses;
+    }
+    public Long getId(){
+        return id;
+    }
 }
