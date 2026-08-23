@@ -1,5 +1,7 @@
 spring:
   application:
     name: cfb-recruiter
+  jpa:
+    open-in-view: false
 server:
-  port: 8081
+  port: 8081 
