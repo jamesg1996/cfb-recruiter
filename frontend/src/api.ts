@@ -36,4 +36,11 @@ export async function setMotivation(id: number, category: string, status: Motiva
          throw new Error(`Failed to set Motivation for recruit: ${response.status}`);
     }
 }
+
+export const CATEGORIES = [
+  'ACADEMIC_PRESTIGE', 'ATHLETIC_FACILITIES', 'BRAND_EXPOSURE', 'CAMPUS_LIFESTYLE',
+  'CHAMPIONSHIP_CONTENDER', 'COACH_PRESTIGE', 'COACH_STABILITY', 'CONFERENCE_PRESTIGE',
+  'PLAYING_STYLE', 'PLAYING_TIME', 'PRO_POTENTIAL', 'PROGRAM_TRADITION',
+  'PROXIMITY_TO_HOME', 'STADIUM_ATMOSPHERE',
+]
     
