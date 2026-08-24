@@ -1,5 +1,6 @@
 package io.github.jamesg1996.cfbrecruiter.persistence;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationStatus;
@@ -38,9 +39,26 @@ public class RecruitEntity {
     protected RecruitEntity() {}
     public RecruitEntity(String name, Map<MotivationCategory, MotivationStatus> motivationStatuses){
         this.name = name;
-        this.motivationStatuses = motivationStatuses;
+        this.motivationStatuses =  new HashMap<>(motivationStatuses);
     }
+
+    
+    public RecruitEntity(String name) {
+        this(name, new HashMap<>());
+    }
+    
     public Long getId(){
         return id;
+    }
+
+    public void confirm(MotivationCategory category){
+        motivationStatuses.put(category, MotivationStatus.CONFIRMED);
+    }
+    public void ruledOut(MotivationCategory category){
+        motivationStatuses.put(category, MotivationStatus.RULED_OUT);
+    }
+
+    public void reset(MotivationCategory category){
+        motivationStatuses.remove(category);
     }
 }
