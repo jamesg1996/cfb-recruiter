@@ -3,6 +3,7 @@ package io.github.jamesg1996.cfbrecruiter.web;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
 import io.github.jamesg1996.cfbrecruiter.domain.deduction.PitchResult;
+import io.github.jamesg1996.cfbrecruiter.persistence.RecruitEntity;
 import io.github.jamesg1996.cfbrecruiter.service.DeductionService;
 import io.github.jamesg1996.cfbrecruiter.service.RecruitService;
 import jakarta.validation.Valid;
@@ -52,4 +54,21 @@ public class RecruitController {
             case UNKNOWN   -> recruitService.reset(id, category);
         }
     }
+    
+    @GetMapping("/{id}")
+    RecruitResponse getRecruitById(@PathVariable long id){
+        return recruitService.getRecruitById(id);
+    }
+
+    @GetMapping
+    List<RecruitResponse> getRecruits(){
+        return recruitService.listRecruits();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRecruit(@PathVariable long id){
+        recruitService.deleteRecruit(id);
+    }
+                            
 }

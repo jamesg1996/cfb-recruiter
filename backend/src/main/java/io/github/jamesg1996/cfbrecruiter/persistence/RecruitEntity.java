@@ -50,6 +50,9 @@ public class RecruitEntity {
     public Long getId(){
         return id;
     }
+    public String getName(){
+        return name;
+    }
 
     public void confirm(MotivationCategory category){
         motivationStatuses.put(category, MotivationStatus.CONFIRMED);
