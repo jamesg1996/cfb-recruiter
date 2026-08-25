@@ -1,0 +1,18 @@
+.pitch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px,  lfr));
+  gap: 8px;
+  margin-top: 16px;
+}
+.pitch {
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+.pitch.eliminated{background: #444; color: #999; text-decoration: line-through;}
+.pitch.possible{background: #f4c430; color: #000;}
+.pitch.confirmed{background: #2e7d32; color: #fff; font-weight: 600;}
+.motivation-row{display: flex; align-items: center; gap: 6px; margin: 4px 0;}
+.motivation-name{flex: 0 0 200px;}
+.motivation-row button.active{outline: 2px solid #fff; font-weight: 600; }
