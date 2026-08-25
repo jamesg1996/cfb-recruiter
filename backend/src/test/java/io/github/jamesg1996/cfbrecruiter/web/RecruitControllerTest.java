@@ -89,7 +89,8 @@ public class RecruitControllerTest {
         mockMvc.perform(get("/recruits/" + id))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name").value("Test Recruit"))
-            .andExpect(jsonPath("$.id").isNumber());
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.motivations").exists());
 
     }
 

@@ -1,6 +1,7 @@
 package io.github.jamesg1996.cfbrecruiter.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitEntity;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitRepository;
+import io.github.jamesg1996.cfbrecruiter.web.RecruitDetailResponse;
 import io.github.jamesg1996.cfbrecruiter.web.RecruitResponse;
 
 @Transactional
@@ -18,11 +20,12 @@ public class RecruitService {
     public RecruitService(RecruitRepository recruitRepository){
         this.recruitRepository = recruitRepository;
     }
-
-    public RecruitResponse getRecruitById(long id){
+    
+    @Transactional(readOnly = true)
+    public RecruitDetailResponse getRecruitById(long id){
         RecruitEntity recruit = load(id);
-        RecruitResponse recruitResponse = new RecruitResponse(id, recruit.getName());
-        return recruitResponse;
+        return new RecruitDetailResponse(id, recruit.getName(), 
+        Map.copyOf(recruit.getMotivationStatuses()));
     }
 
     public List<RecruitResponse> listRecruits(){

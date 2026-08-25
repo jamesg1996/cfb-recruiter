@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
-import { createRecruit, evaluate, type PitchResult, CATEGORIES, type MotivationState, setMotivation } from './api'
+import { createRecruit, evaluate, type PitchResult, CATEGORIES, type MotivationState, setMotivation, type RecruitSummary, listRecruits, deleteRecruit, getRecruit } from './api'
 
 function App() {
   const [results, setResults] = useState<PitchResult[]>([])
@@ -8,12 +8,14 @@ function App() {
   const [recruitId, setRecruitId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [motivations, setMotivations] = useState<Record<string, MotivationState>>({})
+  const [recruits, setRecruits] = useState<RecruitSummary[]>([])
 
 
   async function handleCreate() {
     setError(null)
     try{
       const id = await createRecruit(name)
+      await refreshList()
       setRecruitId(id)
       const board = await evaluate(id)
       setMotivations({})
@@ -36,12 +38,49 @@ function App() {
     }
   }
 
+  async function refreshList(){
+    setRecruits(await listRecruits())
+  }
+
+  useEffect(() => {refreshList()}, [])
+
+  async function handleLoad(id: number){
+    setError(null)
+    try{
+      const detail = await getRecruit(id)
+      setRecruitId(id)
+      setMotivations(detail.motivations)
+      setResults(await evaluate(id))
+    }catch(err){
+      setError(err instanceof Error ? err.message: "unable to load recruit")
+    }
+  }
+
+  async function handleDelete(id: number){
+    setError(null)
+    try{
+      await deleteRecruit(id)
+      if(recruitId == id) {setRecruitId(null); setResults([])}
+      await refreshList()
+    }catch(err){
+      setError(err instanceof Error ? err.message: "unable to delete recruit")
+    }
+  }
+
   return (
     <>
       <section id="recruits">
         <div>
           <h1>CFB Recruiter</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+          <ul className = "recruit-list">
+            {recruits.map(rec => (
+              <li key= {rec.id}>
+                <button onClick={() => handleLoad(rec.id)}>{rec.name}</button>
+                <button onClick={() => handleDelete(rec.id)}>✕</button>
+              </li>
+            ))}
+          </ul>
           <input
             value={name}
             onChange = {e => setName(e.target.value)}

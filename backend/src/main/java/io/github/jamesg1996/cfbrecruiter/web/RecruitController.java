@@ -56,7 +56,7 @@ public class RecruitController {
     }
     
     @GetMapping("/{id}")
-    RecruitResponse getRecruitById(@PathVariable long id){
+    RecruitDetailResponse getRecruitById(@PathVariable long id){
         return recruitService.getRecruitById(id);
     }
 
