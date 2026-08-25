@@ -60,7 +60,7 @@ function App() {
     setError(null)
     try{
       await deleteRecruit(id)
-      if(recruitId == id) {setRecruitId(null); setResults([])}
+      if(recruitId === id) {setRecruitId(null); setResults([])}
       await refreshList()
     }catch(err){
       setError(err instanceof Error ? err.message: "unable to delete recruit")
