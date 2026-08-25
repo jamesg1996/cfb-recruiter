@@ -7,6 +7,7 @@ function App() {
   const [name, setName] = useState('')
   const [recruitId, setRecruitId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [motivations, setMotivations] = useState<Record<string, MotivationState>>({})
 
 
   async function handleCreate() {
@@ -15,6 +16,7 @@ function App() {
       const id = await createRecruit(name)
       setRecruitId(id)
       const board = await evaluate(id)
+      setMotivations({})
       setResults(board)
     }catch (err){
       setError(err instanceof Error ? err.message : 'Error creating Recruit')
@@ -26,6 +28,7 @@ function App() {
     if(recruitId === null) return 
     try{
       await setMotivation(recruitId, category, status)
+      setMotivations(prev => ({...prev, [category]: status }))
       const board = await evaluate(recruitId)
       setResults(board)
     }catch(err){
@@ -47,24 +50,27 @@ function App() {
           <button onClick={handleCreate}>Create &amp; Evaluate</button>
           {recruitId !== null && (
             <div>
-              {CATEGORIES.map(c => (
-                <div key={c}>
-                  {c}
-                  <button onClick={() => handleToggle(c, 'CONFIRMED')}>Confirm</button>
-                  <button onClick={() => handleToggle(c, 'RULED_OUT')}>Rule Out</button>
-                  <button onClick={() => handleToggle(c, 'UNKNOWN')}>Reset</button>
+              {CATEGORIES.map(c => {
+                const current = motivations[c] ?? 'UNKNOWN'
+                return(
+                <div key={c} className="motivation-row">
+                  <span className="motivation-name">{c}</span>
+                  <button className={current === 'CONFIRMED' ? 'active' : '' } onClick={() => handleToggle(c, 'CONFIRMED')}>Confirm</button>
+                  <button className={current === 'RULED_OUT' ? 'active' : '' } onClick={() => handleToggle(c, 'RULED_OUT')}>Rule Out</button>
+                  <button className={current === 'UNKNOWN'   ? 'active' : '' } onClick={() => handleToggle(c, 'UNKNOWN')}>Reset</button>
                 </div>
-              ))}
+                )
+              })}
             </div>
           )}
 
-          <ul>
+          <div className = "pitch-grid">
             {results.map(r => (
-              <li key = {r.pitch.name}>
-                {r.pitch.name} - {r.status}
-              </li>
+              <div key = {r.pitch.name} className={`pitch ${r.status.toLowerCase()}`}>
+                {r.pitch.name}
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
     </>
