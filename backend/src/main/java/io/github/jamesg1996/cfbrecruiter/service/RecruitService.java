@@ -1,11 +1,16 @@
 package io.github.jamesg1996.cfbrecruiter.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitEntity;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitRepository;
+import io.github.jamesg1996.cfbrecruiter.web.RecruitDetailResponse;
+import io.github.jamesg1996.cfbrecruiter.web.RecruitResponse;
 
 @Transactional
 @Service
@@ -15,11 +20,29 @@ public class RecruitService {
     public RecruitService(RecruitRepository recruitRepository){
         this.recruitRepository = recruitRepository;
     }
+    
+    @Transactional(readOnly = true)
+    public RecruitDetailResponse getRecruitById(long id){
+        RecruitEntity recruit = load(id);
+        return new RecruitDetailResponse(id, recruit.getName(), 
+        Map.copyOf(recruit.getMotivationStatuses()));
+    }
+
+    public List<RecruitResponse> listRecruits(){
+        return recruitRepository.findAll().stream()
+            .map(e -> new RecruitResponse(e.getId(), e.getName()))
+            .toList();
+    }
 
     public long createRecruit(String name){
         RecruitEntity recruit = new RecruitEntity(name);
         long id = recruitRepository.save(recruit).getId();
         return id;
+    }
+
+    public void deleteRecruit(long id){
+        RecruitEntity recruit = load(id);
+        recruitRepository.delete(recruit);
     }
 
     private RecruitEntity load(long recruitId) {

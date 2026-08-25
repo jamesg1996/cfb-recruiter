@@ -69,8 +69,54 @@ public class RecruitControllerTest {
         mockMvc.perform(post("/recruits")
         .contentType(APPLICATION_JSON)
         .content("{\"name\":\"\"}"))
-    .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest());
     }
 
+    @Test
+    void getAllRecruits() throws Exception{
+        mockMvc.perform(get("/recruits"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray()); 
+    }
 
+    @Test
+    void getRecruitById() throws Exception{
+        String body = mockMvc.perform(post("/recruits")
+            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\"}"))
+            .andExpect(status().isCreated())
+            .andReturn().getResponse().getContentAsString();
+        long id = Long.parseLong(body.trim());
+        mockMvc.perform(get("/recruits/" + id))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Test Recruit"))
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.motivations").exists());
+
+    }
+
+    @Test
+    void getRecruitByIdUnknownRecruit() throws Exception{
+        mockMvc.perform(get("/recruits/999999"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deleteRecruitById() throws Exception{
+        String body = mockMvc.perform(post("/recruits")
+            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\"}"))
+            .andExpect(status().isCreated())
+            .andReturn().getResponse().getContentAsString();
+        long id = Long.parseLong(body.trim());
+
+        mockMvc.perform(delete("/recruits/" + id))
+        .andExpect(status().isNoContent());
+        mockMvc.perform(get("/recruits/" + id))
+        .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deleteRecruitByIdUnknownRecruit() throws Exception{
+        mockMvc.perform(delete("/recruits/99999"))
+        .andExpect(status().isNotFound());
+    }
 }

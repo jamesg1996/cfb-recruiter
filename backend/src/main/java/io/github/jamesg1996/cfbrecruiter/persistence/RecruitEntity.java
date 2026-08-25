@@ -50,6 +50,12 @@ public class RecruitEntity {
     public Long getId(){
         return id;
     }
+    public String getName(){
+        return name;
+    }
+    public Map<MotivationCategory,MotivationStatus> getMotivationStatuses(){
+        return motivationStatuses;
+    }
 
     public void confirm(MotivationCategory category){
         motivationStatuses.put(category, MotivationStatus.CONFIRMED);
