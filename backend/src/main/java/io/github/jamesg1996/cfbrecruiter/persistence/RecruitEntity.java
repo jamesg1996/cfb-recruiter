@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationStatus;
+import io.github.jamesg1996.cfbrecruiter.domain.Position;
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -25,8 +26,12 @@ public class RecruitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
     String name;
+    Integer year;
+    Integer pipelineGrade;
+    @Enumerated(EnumType.STRING)
+    Position position;
+    Integer nationalRanking;
     
     @ElementCollection
     @CollectionTable(name = "recruit_motivation", joinColumns = @JoinColumn(name = "recruit_id"))
@@ -41,8 +46,15 @@ public class RecruitEntity {
         this.name = name;
         this.motivationStatuses =  new HashMap<>(motivationStatuses);
     }
-
     
+    public RecruitEntity(String name, Integer year, Integer pipelineGrade, Position position, Integer nationalRanking){
+        this(name, new HashMap<>());
+        this.year = year;
+        this.pipelineGrade = pipelineGrade;
+        this.position = position;
+        this.nationalRanking = nationalRanking;
+    }
+
     public RecruitEntity(String name) {
         this(name, new HashMap<>());
     }
@@ -55,6 +67,18 @@ public class RecruitEntity {
     }
     public Map<MotivationCategory,MotivationStatus> getMotivationStatuses(){
         return motivationStatuses;
+    }
+    public Integer getYear(){
+        return year;
+    }
+    public Integer getNationalRanking(){
+        return nationalRanking;
+    }
+    public Position getPosition(){
+        return position;
+    }
+    public Integer getPipelineGrade(){
+        return pipelineGrade;
     }
 
     public void confirm(MotivationCategory category){

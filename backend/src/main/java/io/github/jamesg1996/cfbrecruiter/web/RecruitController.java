@@ -40,7 +40,7 @@ public class RecruitController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     Long create(@Valid @RequestBody CreateRecruitRequest request){
-        return recruitService.createRecruit(request.name());
+        return recruitService.createRecruit(request.name(), request.year(), request.pipelineGrade(), request.position(), request.nationalRanking());
     }
 
     @PutMapping("/{id}/motivations/{category}")
