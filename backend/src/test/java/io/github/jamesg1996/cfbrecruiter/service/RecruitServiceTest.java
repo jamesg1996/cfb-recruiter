@@ -18,6 +18,7 @@ import io.github.jamesg1996.cfbrecruiter.TestContainersConfiguration;
 import io.github.jamesg1996.cfbrecruiter.domain.deduction.PitchResult;
 import io.github.jamesg1996.cfbrecruiter.domain.deduction.PitchStatus;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitRepository;
+import static io.github.jamesg1996.cfbrecruiter.domain.Position.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -32,7 +33,7 @@ public class RecruitServiceTest {
 
     @Test
     void createRecruit(){
-        long recruitId = recruitService.createRecruit("Test Recruit");
+        long recruitId = recruitService.createRecruit("Test Recruit", 2026, 3, HB, 1035);
         recruitService.confirm(recruitId, ACADEMIC_PRESTIGE);
 
         List<PitchResult> pitches = deductionService.evaluate(recruitId);
@@ -46,7 +47,7 @@ public class RecruitServiceTest {
 
     @Test
     void resetRecruit(){
-        long recruitId = recruitService.createRecruit("Test Recruit");
+        long recruitId = recruitService.createRecruit("Test Recruit", 2025, 4,QB,12234);
         recruitService.confirm(recruitId, ACADEMIC_PRESTIGE);
         List<PitchResult> pitches = deductionService.evaluate(recruitId);
         Set<String> beforeReset = pitches.stream()

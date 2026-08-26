@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
+import io.github.jamesg1996.cfbrecruiter.domain.Position;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitEntity;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitRepository;
 import io.github.jamesg1996.cfbrecruiter.web.RecruitDetailResponse;
@@ -24,18 +25,18 @@ public class RecruitService {
     @Transactional(readOnly = true)
     public RecruitDetailResponse getRecruitById(long id){
         RecruitEntity recruit = load(id);
-        return new RecruitDetailResponse(id, recruit.getName(), 
+        return new RecruitDetailResponse(id, recruit.getName(), recruit.getYear(), recruit.getPipelineGrade(), recruit.getPosition(), recruit.getNationalRanking(), 
         Map.copyOf(recruit.getMotivationStatuses()));
     }
 
     public List<RecruitResponse> listRecruits(){
         return recruitRepository.findAll().stream()
-            .map(e -> new RecruitResponse(e.getId(), e.getName()))
+            .map(e -> new RecruitResponse(e.getId(), e.getName(), e.getYear(), e.getPipelineGrade(),e.getPosition(),e.getNationalRanking()))
             .toList();
     }
 
-    public long createRecruit(String name){
-        RecruitEntity recruit = new RecruitEntity(name);
+    public long createRecruit(String name, Integer year, Integer pipelineGrade, Position position, Integer nationalRanking){
+        RecruitEntity recruit = new RecruitEntity(name,year,pipelineGrade,position,nationalRanking);
         long id = recruitRepository.save(recruit).getId();
         return id;
     }

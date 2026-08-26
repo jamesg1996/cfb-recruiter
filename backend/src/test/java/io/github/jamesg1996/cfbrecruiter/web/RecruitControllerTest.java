@@ -27,14 +27,14 @@ public class RecruitControllerTest {
     void createReturns201WithId() throws Exception {
         mockMvc.perform(post("/recruits")
             .contentType(APPLICATION_JSON)
-            .content("{\"name\":\"Test Recruit\"}"))
-        .andExpect(status().isCreated());
+            .content("{\"name\":\"Test Recruit\",\"year\":2026,\"pipelineGrade\":3,\"position\":\"HB\"}"))
+            .andExpect(status().isCreated());
     }
 
     @Test
     void updateRecruitMotivation() throws Exception{
         String body = mockMvc.perform(post("/recruits")
-            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\"}"))
+            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\",\"year\":2026,\"pipelineGrade\":3,\"position\":\"HB\"}"))
             .andExpect(status().isCreated())
             .andReturn().getResponse().getContentAsString();
         long id = Long.parseLong(body.trim());
@@ -48,7 +48,7 @@ public class RecruitControllerTest {
     @Test
     void evaluateRecruit() throws Exception{
         String body = mockMvc.perform(post("/recruits")
-            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\"}"))
+            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\",\"year\":2026,\"pipelineGrade\":3,\"position\":\"HB\"}"))
             .andExpect(status().isCreated())
             .andReturn().getResponse().getContentAsString();
         long id = Long.parseLong(body.trim());
@@ -82,7 +82,7 @@ public class RecruitControllerTest {
     @Test
     void getRecruitById() throws Exception{
         String body = mockMvc.perform(post("/recruits")
-            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\"}"))
+            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\",\"year\":2026,\"pipelineGrade\":3,\"position\":\"HB\",\"nationalRanking\":50}"))
             .andExpect(status().isCreated())
             .andReturn().getResponse().getContentAsString();
         long id = Long.parseLong(body.trim());
@@ -90,7 +90,9 @@ public class RecruitControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name").value("Test Recruit"))
             .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.motivations").exists());
+            .andExpect(jsonPath("$.motivations").exists())
+            .andExpect(jsonPath("$.position").value("HB"))
+            .andExpect(jsonPath("$.nationalRanking").value(50));
 
     }
 
@@ -103,7 +105,7 @@ public class RecruitControllerTest {
     @Test
     void deleteRecruitById() throws Exception{
         String body = mockMvc.perform(post("/recruits")
-            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\"}"))
+            .contentType(APPLICATION_JSON).content("{\"name\":\"Test Recruit\",\"year\":2026,\"pipelineGrade\":3,\"position\":\"HB\"}"))
             .andExpect(status().isCreated())
             .andReturn().getResponse().getContentAsString();
         long id = Long.parseLong(body.trim());
