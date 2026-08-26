@@ -1,21 +1,25 @@
 export type PitchStatus = 'ELIMINATED' | 'POSSIBLE' | 'CONFIRMED'
 export interface Pitch {name : string; motivationCategories : string[]}
 export interface PitchResult { pitch : Pitch; status: PitchStatus}
-export interface RecruitSummary {id: number; name: string}
-export interface RecruitDetail {id: number; name: string; motivations: Record<string, MotivationState> }
+export interface RecruitSummary {id: number; name: string;
+  year: number; pipelineGrade: number; position: string; nationalRanking: number | null}
+export interface RecruitDetail {id: number; name: string;
+  year: number; pipelineGrade: number; position: string; nationalRanking: number | null;
+  motivations: Record<string, MotivationState>}
 export type MotivationState = 'CONFIRMED' | 'RULED_OUT' | 'UNKNOWN'
 
-export async function createRecruit(name : string): Promise<number> {
+export async function createRecruit(name: string, year: number, pipelineGrade: number,
+                                    position: string, nationalRanking: number | null
+): Promise<number> {
     const response = await fetch('/recruits', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ name })
+        body: JSON.stringify({ name, year, pipelineGrade, position, nationalRanking})
     });
 
     if (!response.ok) {
         throw new Error(`Failed to create recruit: ${response.status}`);
     }
-
     return response.json() as Promise<number>;
 }
 
@@ -71,4 +75,9 @@ export const CATEGORIES = [
   'PLAYING_STYLE', 'PLAYING_TIME', 'PRO_POTENTIAL', 'PROGRAM_TRADITION',
   'PROXIMITY_TO_HOME', 'STADIUM_ATMOSPHERE',
 ]
+export const POSITIONS = [
+    'QB','HB','FB','WR','TE','T','G','C',
+    'EDGE','DT','OLB','MIKE','CB','FS','SS','K','P','ATH'
+]
+
     

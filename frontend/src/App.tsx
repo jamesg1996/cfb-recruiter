@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { createRecruit, evaluate, type PitchResult, CATEGORIES, type MotivationState, setMotivation, type RecruitSummary, listRecruits, deleteRecruit, getRecruit } from './api'
+import { createRecruit, evaluate, type PitchResult, CATEGORIES, POSITIONS, type MotivationState, setMotivation, type RecruitSummary, listRecruits, deleteRecruit, getRecruit } from './api'
 
 function App() {
   const [results, setResults] = useState<PitchResult[]>([])
   const [name, setName] = useState('')
+  const [year, setYear] = useState('')
+  const [pipelineGrade, setPipelineGrade] = useState('')
+  const [position, setPosition] = useState('QB')
+  const [nationalRanking, setNationalRanking] = useState('')
   const [recruitId, setRecruitId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [motivations, setMotivations] = useState<Record<string, MotivationState>>({})
@@ -14,7 +18,8 @@ function App() {
   async function handleCreate() {
     setError(null)
     try{
-      const id = await createRecruit(name)
+      const id = await createRecruit( name, Number(year), Number(pipelineGrade), position, 
+                                      nationalRanking === ''? null: Number(nationalRanking))
       await refreshList()
       setRecruitId(id)
       const board = await evaluate(id)
@@ -77,15 +82,23 @@ function App() {
             {recruits.map(rec => (
               <li key= {rec.id}>
                 <button onClick={() => handleLoad(rec.id)}>{rec.name}</button>
+                <span className ='recruit-meta'>
+                   · {rec.position} · {rec.year} · grade {rec.pipelineGrade}
+                  {rec.nationalRanking !== null && ` · #${rec.nationalRanking}`}
+                </span>
                 <button onClick={() => handleDelete(rec.id)}>✕</button>
               </li>
             ))}
           </ul>
-          <input
-            value={name}
-            onChange = {e => setName(e.target.value)}
-            placeholder = "Recruit Name" 
-            />
+          <input value={name} onChange = {e => setName(e.target.value)} placeholder = "Recruit Name" />
+          <input type="number" value={year} onChange={e => setYear(e.target.value)} placeholder="Year" />
+          <input type="number" min="1" max="5" value={pipelineGrade}
+            onChange={e => setPipelineGrade(e.target.value)} placeholder="Pipeline grade (1-5)" />
+          <input type="number" value={nationalRanking}
+            onChange={e => setNationalRanking(e.target.value)} placeholder="National ranking (optional)" />
+          <select value={position} onChange={e => setPosition(e.target.value)}>
+            {POSITIONS.map(p => <option key={p} value={p}>{p}</option>)}
+          </select>
           <button onClick={handleCreate}>Create &amp; Evaluate</button>
           {recruitId !== null && (
             <div>
