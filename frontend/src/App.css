@@ -1,18 +1,60 @@
-.pitch-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px,  lfr));
-  gap: 8px;
-  margin-top: 16px;
+:root {
+  --bg: #f6f7f9;  --panel: #ffffff;  --line: #e4e7ec;
+  --ink: #1c1e21; --ink-soft: #6b7280;
+  --ready: #1f7a3f;  --ready-bg: #e6f4ea;
+  --warn: #b8860b;   --warn-bg: #fdf3d9;
+  --neutral-bg: #eef0f3;
+  --error: #b3261e;  --error-bg: #fbe9e7;
 }
-.pitch {
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 14px;
-}
-.pitch.eliminated{background: #444; color: #999; text-decoration: line-through;}
-.pitch.possible{background: #f4c430; color: #000;}
-.pitch.confirmed{background: #2e7d32; color: #fff; font-weight: 600;}
-.motivation-row{display: flex; align-items: center; gap: 6px; margin: 4px 0;}
-.motivation-name{flex: 0 0 200px;}
-.motivation-row button.active{outline: 2px solid #fff; font-weight: 600; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+#recruits > div { max-width: 1080px; margin: 0 auto; padding: 24px; }
+h1 { font-size: 20px; }
+
+.motivation-row { display:flex; align-items:center; justify-content:space-between;
+  padding:9px 4px; border-bottom:1px solid #eef0f3; font-size:13px; }
+.motivation-name { font-weight:500; }
+.toggle-group { display:inline-flex; border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+.toggle-opt { font-size:11px; font-weight:600; padding:6px 11px; cursor:pointer;
+  background:var(--panel); color:var(--ink-soft); border:none; border-right:1px solid var(--line); }
+.toggle-opt:last-child { border-right:none; }
+.toggle-opt.on-confirmed { background:var(--ready-bg);   color:var(--ready); }
+.toggle-opt.on-ruledout  { background:var(--error-bg);   color:var(--error); }
+.toggle-opt.on-unknown   { background:var(--neutral-bg); color:var(--ink); }
+.hard-sell-banner { border:1.5px solid var(--ready); background:var(--ready-bg); color:var(--ready);
+  border-radius:8px; padding:14px; margin:16px 0; }
+.hard-sell-banner .label { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+.hard-sell-banner .pitch-name { font-size:17px; font-weight:700; margin-top:4px; }
+
+.recruit-list { list-style:none; margin:0 0 20px; padding:0; display:flex; flex-direction:column; gap:8px; }
+.recruit-card { display:flex; align-items:center; gap:14px; padding:12px 14px;
+  background:var(--panel); border:1px solid var(--line); border-radius:8px; }
+.recruit-name-btn { font-size:14px; font-weight:600; color:var(--ink);
+  background:none; border:none; padding:0; cursor:pointer; }
+.recruit-name-btn:hover { color:var(--ready); }
+.recruit-meta { color:var(--ink-soft); font-size:12px; }
+.pipeline-dots { display:inline-flex; align-items:center; gap:3px; margin-left:auto; }
+.p-dot { width:9px; height:9px; border-radius:2px; background:#fff; border:1px solid var(--line); }
+.p-dot.filled { background:#5b6b8c; border-color:#5b6b8c; }
+.recruit-delete { background:none; border:none; color:var(--ink-soft); font-size:14px; cursor:pointer; }
+.recruit-delete:hover { color:var(--error); }
+
+.error { color: var(--error); }
+.create-form { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.create-form input, .create-form select { padding:8px 10px; border:1px solid var(--line); border-radius:6px; font-size:13px; }
+.create-form button, .back-btn { padding:8px 14px; border:1px solid var(--line); border-radius:6px;
+  background:var(--panel); cursor:pointer; font-size:13px; }
+.back-btn { margin-bottom:16px; color:var(--ink-soft); }
+.recruit-head { padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid var(--line); }
+.recruit-name { font-size:18px; font-weight:700; margin:0; }
+.recruit-head .recruit-meta { font-size:12px; color:var(--ink-soft); margin-top:2px; }
+.detail-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:24px; align-items:start; }
+.detail-side .pitch-grid { grid-template-columns:repeat(auto-fill, minmax(115px,1fr)); }
+
+.pitch-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin:16px 0 28px; }
+.pitch { display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 8px;
+  border:1px solid var(--line); border-radius:8px; background:var(--panel); text-align:center; font-size:11.5px; }
+.pitch-icon { font-size:30px; line-height:1; }
+.pitch.eliminated { opacity:.4; filter:grayscale(1); }        /* dimmed like the game's non-matches */
+.pitch.possible   { border-color:var(--warn); }
+.pitch.confirmed  { border-color:var(--ready); background:var(--ready-bg); color:var(--ready); font-weight:700; }
