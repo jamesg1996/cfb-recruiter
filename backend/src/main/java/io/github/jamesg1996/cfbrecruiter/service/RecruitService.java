@@ -25,13 +25,13 @@ public class RecruitService {
     @Transactional(readOnly = true)
     public RecruitDetailResponse getRecruitById(long id){
         RecruitEntity recruit = load(id);
-        return new RecruitDetailResponse(id, recruit.getName(), 
+        return new RecruitDetailResponse(id, recruit.getName(), recruit.getYear(), recruit.getPipelineGrade(), recruit.getPosition(), recruit.getNationalRanking(), 
         Map.copyOf(recruit.getMotivationStatuses()));
     }
 
     public List<RecruitResponse> listRecruits(){
         return recruitRepository.findAll().stream()
-            .map(e -> new RecruitResponse(e.getId(), e.getName()))
+            .map(e -> new RecruitResponse(e.getId(), e.getName(), e.getYear(), e.getPipelineGrade(),e.getPosition(),e.getNationalRanking()))
             .toList();
     }
 
