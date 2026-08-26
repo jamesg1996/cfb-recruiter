@@ -80,4 +80,14 @@ export const POSITIONS = [
     'EDGE','DT','OLB','MIKE','CB','FS','SS','K','P','ATH'
 ]
 
+export const PITCH_ICONS: Record<string, string> = {
+  'College Experience': '🎒', 'Team Player': '🤝', 'Campus Personality': '🏛️',
+  'Gamer': '🎮', 'Standard Bearer': '👑', 'Student Of The Game': '📖',
+  'Hometown Hero': '🦸', 'Status Seeker': '🔍', 'The Clutch': '👟',
+  'Primetime Player': '📺', 'Coach Connection': '🪖', 'Aspirational Goals': '✨',
+  'House Call': '🙌', 'Football Influencer': '📱', 'Clocked In': '⏱️',
+  'Star Search': '⭐', 'Grassroots Traditionalist': '🌱', 'Conference Legend': '🏆',
+  'Sunday Player': '🛡️', 'Gym Rat': '🐀',
+}
+
     

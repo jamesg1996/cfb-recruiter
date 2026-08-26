@@ -26,12 +26,6 @@ h1 { font-size: 20px; }
 .hard-sell-banner .label { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
 .hard-sell-banner .pitch-name { font-size:17px; font-weight:700; margin-top:4px; }
 
-.pitch-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:8px; margin-top:16px; }
-.pitch { padding:10px 12px; border-radius:6px; text-align:center; font-size:13px; border:1px solid var(--line); background:var(--panel); }
-.pitch.eliminated { color:#b3b3b3; background:#fafafa; text-decoration:line-through; }
-.pitch.possible   { background:var(--warn-bg); color:var(--warn); border-color:var(--warn-bg); }
-.pitch.confirmed  { background:var(--ready-bg); color:var(--ready); border-color:var(--ready); font-weight:700; }
-
 .recruit-list { list-style:none; margin:0 0 20px; padding:0; display:flex; flex-direction:column; gap:8px; }
 .recruit-card { display:flex; align-items:center; gap:14px; padding:12px 14px;
   background:var(--panel); border:1px solid var(--line); border-radius:8px; }
@@ -56,3 +50,11 @@ h1 { font-size: 20px; }
 .recruit-head .recruit-meta { font-size:12px; color:var(--ink-soft); margin-top:2px; }
 .detail-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:24px; align-items:start; }
 .detail-side .pitch-grid { grid-template-columns:repeat(auto-fill, minmax(115px,1fr)); }
+
+.pitch-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin:16px 0 28px; }
+.pitch { display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 8px;
+  border:1px solid var(--line); border-radius:8px; background:var(--panel); text-align:center; font-size:11.5px; }
+.pitch-icon { font-size:30px; line-height:1; }
+.pitch.eliminated { opacity:.4; filter:grayscale(1); }        /* dimmed like the game's non-matches */
+.pitch.possible   { border-color:var(--warn); }
+.pitch.confirmed  { border-color:var(--ready); background:var(--ready-bg); color:var(--ready); font-weight:700; }

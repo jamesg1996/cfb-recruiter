@@ -12,6 +12,7 @@ import {
   listRecruits,
   deleteRecruit,
   getRecruit,
+  PITCH_ICONS
 } from "./api";
 
 function App() {
@@ -204,58 +205,35 @@ function App() {
                   ` · #${selected.nationalRanking}`}
               </p>
             </div>
-
-            <div className="detail-grid">
+              {confirmed && (
+                <div className="hard-sell-banner">
+                 <div className="label">✓ Hard sell ready</div>
+                 <div className="pitch-name">{confirmed.pitch.name}</div>
+                </div>
+              )}
+              <div className="pitch-grid">
+                {results.map(r => (
+                  <div key={r.pitch.name} className={`pitch ${r.status.toLowerCase()}`}>
+                    <span className="pitch-icon">{PITCH_ICONS[r.pitch.name] ?? '🏈'}</span>
+                    <span className="pitch-name">{r.pitch.name}</span>
+                  </div>
+                ))}
+              </div>
               <div className="motivations">
-                {CATEGORIES.map((c) => {
-                  const current = motivations[c] ?? "UNKNOWN";
+                {CATEGORIES.map(c => {
+                  const current = motivations[c] ?? 'UNKNOWN'
                   return (
                     <div key={c} className="motivation-row">
                       <span className="motivation-name">{c}</span>
                       <div className="toggle-group">
-                        <button
-                          className={`toggle-opt ${current === "CONFIRMED" ? "on-confirmed" : ""}`}
-                          onClick={() => handleToggle(c, "CONFIRMED")}
-                        >
-                          CONFIRM
-                        </button>
-                        <button
-                          className={`toggle-opt ${current === "RULED_OUT" ? "on-ruledout" : ""}`}
-                          onClick={() => handleToggle(c, "RULED_OUT")}
-                        >
-                          RULE OUT
-                        </button>
-                        <button
-                          className={`toggle-opt ${current === "UNKNOWN" ? "on-unknown" : ""}`}
-                          onClick={() => handleToggle(c, "UNKNOWN")}
-                        >
-                          UNKNOWN
-                        </button>
+                        <button className={`toggle-opt ${current === 'CONFIRMED' ? 'on-confirmed' : ''}`} onClick={() => handleToggle(c, 'CONFIRMED')}>CONFIRM</button>
+                        <button className={`toggle-opt ${current === 'RULED_OUT' ? 'on-ruledout' : ''}`} onClick={() => handleToggle(c, 'RULED_OUT')}>RULE OUT</button>
+                        <button className={`toggle-opt ${current === 'UNKNOWN' ? 'on-unknown' : ''}`} onClick={() => handleToggle(c, 'UNKNOWN')}>UNKNOWN</button>
                       </div>
                     </div>
-                  );
+                  )
                 })}
               </div>
-
-              <div className="detail-side">
-                {confirmed && (
-                  <div className="hard-sell-banner">
-                    <div className="label">✓ Hard sell ready</div>
-                    <div className="pitch-name">{confirmed.pitch.name}</div>
-                  </div>
-                )}
-                <div className="pitch-grid">
-                  {results.map((r) => (
-                    <div
-                      key={r.pitch.name}
-                      className={`pitch ${r.status.toLowerCase()}`}
-                    >
-                      {r.pitch.name}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </>
         )}
       </div>
