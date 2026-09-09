@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
+import io.github.jamesg1996.cfbrecruiter.domain.Pitch;
 import io.github.jamesg1996.cfbrecruiter.domain.Position;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitEntity;
 import io.github.jamesg1996.cfbrecruiter.persistence.RecruitRepository;
@@ -17,9 +18,11 @@ import io.github.jamesg1996.cfbrecruiter.web.RecruitResponse;
 @Service
 public class RecruitService {
     private final RecruitRepository recruitRepository;
+    private final DeductionService deductionService;
     
-    public RecruitService(RecruitRepository recruitRepository){
+    public RecruitService(RecruitRepository recruitRepository, DeductionService deductionService){
         this.recruitRepository = recruitRepository;
+        this.deductionService = deductionService;
     }
     
     @Transactional(readOnly = true)
@@ -27,12 +30,6 @@ public class RecruitService {
         RecruitEntity recruit = load(id);
         return new RecruitDetailResponse(id, recruit.getName(), recruit.getYear(), recruit.getPipelineGrade(), recruit.getPosition(), recruit.getNationalRanking(), 
         Map.copyOf(recruit.getMotivationStatuses()));
-    }
-
-    public List<RecruitResponse> listRecruits(){
-        return recruitRepository.findAll().stream()
-            .map(e -> new RecruitResponse(e.getId(), e.getName(), e.getYear(), e.getPipelineGrade(),e.getPosition(),e.getNationalRanking()))
-            .toList();
     }
 
     public long createRecruit(String name, Integer year, Integer pipelineGrade, Position position, Integer nationalRanking){
@@ -61,5 +58,16 @@ public class RecruitService {
 
     public void reset(long recruitId, MotivationCategory category){
         load(recruitId).reset(category);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecruitResponse> listRecruits(){
+        List<Pitch> pitches = deductionService.loadPitches();
+        return recruitRepository.findAll().stream()
+            .map(e -> new RecruitResponse(e.getId(), e.getName(), e.getYear(),
+                 e.getPipelineGrade(), e.getPosition(), e.getNationalRanking(),
+                 deductionService.confirmedPitchName(e, pitches).orElse(null)))
+            .toList();
+    
     }
 }

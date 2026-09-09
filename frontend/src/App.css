@@ -58,3 +58,10 @@ h1 { font-size: 20px; }
 .pitch.eliminated { opacity:.4; filter:grayscale(1); }        /* dimmed like the game's non-matches */
 .pitch.possible   { border-color:var(--warn); }
 .pitch.confirmed  { border-color:var(--ready); background:var(--ready-bg); color:var(--ready); font-weight:700; }
+
+.recruit-pitch { display:inline-flex; align-items:center; gap:5px; white-space:nowrap; 
+  font-size:12px; font-weight:600; padding:4px 9px; border-radius:999px; border:1px solid var(--line); }
+.recruit-pitch.confirmed { color:var(--ready); background:var(--ready-bg); border-color: var(--ready); }
+.recruit-pitch.pending   { color:var(--ink-soft); background:var(--neutral-bg); font-weight: 500; }
+.pitch-icon-sm { font-size:16px; line-height:1; }
+.pitch-check { font-weight:800;}

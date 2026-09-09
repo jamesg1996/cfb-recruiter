@@ -1,8 +1,9 @@
 export type PitchStatus = 'ELIMINATED' | 'POSSIBLE' | 'CONFIRMED'
 export interface Pitch {name : string; motivationCategories : string[]}
 export interface PitchResult { pitch : Pitch; status: PitchStatus}
-export interface RecruitSummary {id: number; name: string;
-  year: number; pipelineGrade: number; position: string; nationalRanking: number | null}
+export interface RecruitSummary { id: number; name: string;
+  year: number; pipelineGrade: number; position: string; nationalRanking: number | null;
+  confirmedPitch: string | null }
 export interface RecruitDetail {id: number; name: string;
   year: number; pipelineGrade: number; position: string; nationalRanking: number | null;
   motivations: Record<string, MotivationState>}

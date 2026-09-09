@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jamesg1996.cfbrecruiter.domain.MotivationCategory;
 import io.github.jamesg1996.cfbrecruiter.domain.deduction.PitchResult;
-import io.github.jamesg1996.cfbrecruiter.persistence.RecruitEntity;
 import io.github.jamesg1996.cfbrecruiter.service.DeductionService;
 import io.github.jamesg1996.cfbrecruiter.service.RecruitService;
 import jakarta.validation.Valid;

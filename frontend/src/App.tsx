@@ -123,6 +123,17 @@ function App() {
                     {rec.nationalRanking !== null &&
                       ` · #${rec.nationalRanking}`}
                   </span>
+                  {rec.confirmedPitch ? (
+                    <span className="recruit-pitch confirmed" title="Hard sell confirmed">
+                      <span className= "pitch-icon-sm">{PITCH_ICONS[rec.confirmedPitch] ?? '🏈'}</span>
+                      {rec.confirmedPitch}
+                      <span className="pitch-check">✓</span>
+                    </span>
+                  ) : (
+                    <span className="recruit-pitch pending" title = "Pitch not locked yet">
+                      Pitch not confirmed
+                    </span>
+                  )}
                   <span
                     className="pipeline-dots"
                     title={`Pipeline grade ${rec.pipelineGrade}/5`}
@@ -191,6 +202,7 @@ function App() {
               onClick={() => {
                 setRecruitId(null);
                 setResults([]);
+                refreshList();  
               }}
             >
               ← Back to board
